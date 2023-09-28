@@ -149,7 +149,6 @@ This configuration file is used to specify hyperparameters and settings for the 
 {
   "seed_value": 123,
   "validation_split": 0.1,
-  "prediction_field_name": "prediction",
   "max_trials": 10,
   "epochs": 200,
   "custom_search": true,
@@ -165,8 +164,6 @@ Fields:
 - seed_value: (Integer) The seed used for random number generation to ensure reproducibility. Default is 123.
 
 - validation_split: (Float) The fraction of the data to be used as validation data. For instance, a value of 0.1 indicates that 10% of the data is reserved for validation purposes.
-
-- prediction_field_name: (String) The name of the field/column in the output data where the model's predictions will be stored. Default is "prediction".
 
 - max_trials: (Integer) The maximum number of trials for searching the best model. Each trial is a unique combination of hyperparameters.
 
