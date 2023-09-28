@@ -2,8 +2,8 @@
   "seed_value": 123,
   "validation_split": 0.1,
   "prediction_field_name": "prediction",
-  "max_trials": 1,
-  "epochs": 10,
+  "max_trials": 10,
+  "epochs": 200,
   "custom_search": true,
   "search_space": {
     "num_layers": [2, 3],
