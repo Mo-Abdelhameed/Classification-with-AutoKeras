@@ -160,10 +160,10 @@ def encode_target(targets: pd.Series, schema: ClassificationSchema) -> pd.Series
     """
     target_classes = schema.target_classes
     target_map = {}
-
     for i, label in enumerate(target_classes):
         target_map[label] = i
 
+    targets = targets.astype(str)
     dump(target_map, paths.TARGET_MAP)
     return targets.map(target_map)
 
