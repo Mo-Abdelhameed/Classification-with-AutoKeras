@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 from config import paths
 from logger import get_logger
 from Classifier import Classifier, predict_with_model
@@ -34,8 +34,16 @@ def run_batch_predictions(
     model = Classifier.load(predictor_dir)
 
     logger.info("Making predictions...")
-    predictions_arr = predict_with_model(model, x_test).squeeze()
-    predictions_df = pd.DataFrame(predictions_arr, columns=data_schema.target_classes)
+    predictions_arr = predict_with_model(model, x_test)
+
+    if data_schema.model_category == 'multiclass_classification':
+        predictions_df = pd.DataFrame(predictions_arr, columns=data_schema.target_classes)
+    elif data_schema.model_category == 'binary_classification':
+        predictions_df = pd.DataFrame(
+            np.hstack((1-predictions_arr, predictions_arr)),
+            columns=data_schema.target_classes
+        )
+
     predictions_df[data_schema.id] = ids
     logger.info("Saving predictions...")
     save_dataframe_as_csv(dataframe=predictions_df, file_path=predictions_file_path)
