@@ -162,11 +162,11 @@ def encode_target(targets: pd.Series, schema: ClassificationSchema) -> pd.Series
     target_map = {}
 
     for i, label in enumerate(target_classes):
-        target_map[i] = label
+        target_map[label] = i
 
     dump(target_map, paths.TARGET_MAP)
-
     return targets.map(target_map)
+
 
 
 
