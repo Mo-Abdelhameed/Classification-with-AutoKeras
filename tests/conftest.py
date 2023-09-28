@@ -1,12 +1,13 @@
 import json
 import os
-
+import random
+import string
 import numpy as np
 import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
-from src.schema.data_schema import RegressionSchema
+from src.schema.data_schema import ClassificationSchema
 from src.serve import create_app
 from src.serve_utils import get_model_resources
 from src.train import run_training
@@ -18,15 +19,14 @@ def schema_dict():
     valid_schema = {
         "title": "test dataset",
         "description": "test dataset",
-        "modelCategory": "regression",
+        "modelCategory": "multiclass_classification",
         "schemaVersion": 1.0,
         "inputDataFormat": "CSV",
-        "encoding": "utf-8",
         "id": {"name": "id", "description": "unique identifier."},
         "target": {
             "name": "target_field",
             "description": "some target desc.",
-            "example": 5,
+            "classes": ["A", "B", "C"],
         },
         "features": [
             {
@@ -65,7 +65,7 @@ def schema_dict():
 @pytest.fixture
 def schema_provider(schema_dict):
     """Fixture to create a sample schema for testing"""
-    return RegressionSchema(schema_dict)
+    return ClassificationSchema(schema_dict)
 
 
 @pytest.fixture
@@ -117,7 +117,7 @@ def sample_data():
             "categorical_feature_2": np.random.choice(
                 ["P", "Q", "R", "S", "T"], size=N
             ),
-            "target_field": np.random.normal(0, 10, size=N),
+            "target_field": np.random.choice(["A", "B", "C"], size=N),
         }
     )
     return data
@@ -191,17 +191,34 @@ def model_config_file_path(model_config, tmpdir):
 
 
 @pytest.fixture
-def predictions_df(sample_test_data, schema_provider):
+def predictions_df():
     """Fixture for creating a DataFrame representing predictions."""
+    num_preds = 50
+    # Create 5 random probabilities
+    probabilities_A = [random.uniform(0, 0.3) for _ in range(num_preds)]
+    # Subtract each probability from 1 to create a complementary probability
+    probabilities_B = [random.uniform(0, 0.3) for _ in range(num_preds)]
 
-    predictions = sample_test_data[[schema_provider.id, schema_provider.target]].copy()
-    predictions[schema_provider.target] += (
-        np.random.uniform(-1, 1, len(predictions))
-        * 0.1
-        * predictions[schema_provider.target]
+    summ = list(np.array(probabilities_A) + np.array(probabilities_B))
+
+    probabilities_C = [1 - p for p in summ]
+
+    # Create a DataFrame with an 'id' column and two class probability
+    # columns 'A', 'B' and 'C'
+    df = pd.DataFrame(
+        {
+            "id": [
+                "".join(
+                    random.choices(string.ascii_lowercase + string.digits, k=num_preds)
+                )
+                for _ in range(num_preds)
+            ],
+            "A": probabilities_A,
+            "B": probabilities_B,
+            "C": probabilities_C
+        }
     )
-    predictions.rename(columns={schema_provider.target: "prediction"}, inplace=True)
-    return predictions
+    return df
 
 
 @pytest.fixture

@@ -46,7 +46,7 @@ def test_validate_data_correct_test_data(
     DataFrame is identical to the input DataFrame.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                     which encapsulates the data
                                                     schema.
         sample_test_data (pd.DataFrame): A sample testing DataFrame formatted
@@ -73,7 +73,7 @@ def test_validate_data_missing_feature_column_train_data(
     is missing from the input DataFrame used for training, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_train_data (pd.DataFrame): A sample training DataFrame with a missing
                                           feature column.
@@ -93,7 +93,7 @@ def test_validate_data_missing_feature_column_test_data(
     is missing from the input DataFrame used for testing, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_test_data (pd.DataFrame): A sample testing DataFrame with a missing
                                          feature column.
@@ -113,7 +113,7 @@ def test_validate_data_missing_id_column_train_data(
     from the input DataFrame used for training, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_train_data (pd.DataFrame): A sample training DataFrame with a missing
                                           id column.
@@ -134,7 +134,7 @@ def test_validate_data_missing_id_column_test_data(
     from the input DataFrame used for testing, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_test_data (pd.DataFrame): A sample testing DataFrame with a missing
                                          id column.
@@ -155,7 +155,7 @@ def test_validate_data_missing_target_column_train_data(
     missing from the input DataFrame used for training, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_train_data (pd.DataFrame): A sample training DataFrame with a missing
                                           target column.
@@ -176,7 +176,7 @@ def test_validate_data_duplicate_ids_train_data(
     duplicate values in the input DataFrame used for training, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_train_data (pd.DataFrame): A sample training DataFrame with
                                           duplicate IDs.
@@ -201,7 +201,7 @@ def test_validate_data_non_nullable_feature_contains_null_values(
     null values, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_train_data (pd.DataFrame): A sample training DataFrame with a
                                           non-nullable feature containing null values.
@@ -224,7 +224,7 @@ def test_validate_data_numeric_feature_contains_non_numeric_value(
     non-numeric values, a ValueError is raised.
 
     Args:
-        schema_provider (RegressionSchema): The schema provider instance
+        schema_provider (ClassificationSchema): The schema provider instance
                                                 which encapsulates the data schema.
         sample_train_data (pd.DataFrame): A sample training DataFrame with a
                                         numeric feature containing non-numeric values.

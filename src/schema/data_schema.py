@@ -89,6 +89,16 @@ class ClassificationSchema:
         """
         return self.schema["inputDataFormat"]
 
+    @property
+    def encoding(self) -> str:
+        """
+        Gets the encoding of the input data.
+
+        Returns:
+            str: The encoding of the input data.
+        """
+        return self.schema["encoding"]
+
     def _get_features(self) -> Tuple[List[str], List[str]]:
         """
         Returns the feature names of numeric and categorical data types.

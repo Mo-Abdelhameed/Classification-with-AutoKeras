@@ -13,7 +13,7 @@ from src.schema.data_schema import (
 
 def test_init():
     """
-    Test the initialization of RegressionSchema class with a valid schema
+    Test the initialization of ClassificationSchema class with a valid schema
     dictionary.
 
     Asserts that the properties of the schema object match the input schema dictionary.
@@ -32,7 +32,7 @@ def test_init():
     }
 
     # When
-    schema = RegressionSchema(schema_dict)
+    schema = ClassificationSchema(schema_dict)
 
     # Then
     assert schema.model_category == "regression"
@@ -78,7 +78,7 @@ def test_get_allowed_values_for_categorical_feature():
             },
         ],
     }
-    schema = RegressionSchema(schema_dict)
+    schema = ClassificationSchema(schema_dict)
 
     # When
     allowed_values = schema.get_allowed_values_for_categorical_feature("Test feature 2")
@@ -125,7 +125,7 @@ def test_get_example_value_for_numeric_feature():
             },
         ],
     }
-    schema = RegressionSchema(schema_dict)
+    schema = ClassificationSchema(schema_dict)
 
     # When
     example_value = schema.get_example_value_for_feature("Test feature 1")
@@ -177,7 +177,7 @@ def test_get_description_for_id_target_and_features():
             },
         ],
     }
-    schema = RegressionSchema(schema_dict)
+    schema = ClassificationSchema(schema_dict)
 
     # When
     id_description = schema.id_description
@@ -225,7 +225,7 @@ def test_is_feature_nullable():
             },
         ],
     }
-    schema = RegressionSchema(schema_dict)
+    schema = ClassificationSchema(schema_dict)
 
     # When
     is_nullable = schema.is_feature_nullable("Test feature 1")
@@ -255,8 +255,8 @@ def test_load_json_data_schema(input_schema_dir):
     schema = load_json_data_schema(input_schema_dir)
 
     # Then
-    assert isinstance(schema, RegressionSchema)
-    assert schema.model_category == "regression"
+    assert isinstance(schema, ClassificationSchema)
+    assert schema.model_category in ["binary_classification", "multiclass_classification"]
 
 
 def test_save_and_load_schema(tmpdir, schema_provider):
@@ -272,9 +272,9 @@ def test_save_and_load_schema(tmpdir, schema_provider):
     # Load the schema using the load_saved_schema function
     loaded_schema = load_saved_schema(save_dir_path)
 
-    # Check if the loaded schema is an instance of RegressionSchema
-    assert isinstance(loaded_schema, RegressionSchema)
-    assert loaded_schema.model_category == "regression"
+    # Check if the loaded schema is an instance of ClassificationSchema
+    assert isinstance(loaded_schema, ClassificationSchema)
+    assert loaded_schema.model_category in ["binary_classification", "multiclass_classification"]
 
 
 def test_load_saved_schema_nonexistent_file(tmpdir):

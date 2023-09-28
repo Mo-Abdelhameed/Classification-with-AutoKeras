@@ -1,4 +1,4 @@
-# Dockerized-Classification-with-AutoKeras
+# Classification-with-AutoKeras
 
 ## Project Description
 

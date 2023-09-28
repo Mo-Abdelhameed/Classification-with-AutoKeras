@@ -57,14 +57,14 @@ def test_create_predictions_response(predictions_df, schema_provider, request_id
     Args:
         predictions_df (pd.DataFrame): A fixture providing a DataFrame of model
             predictions.
-        schema_provider (RegressionSchema): A fixture providing an instance
-            of the RegressionSchema.
+        schema_provider (ClassificationSchema): A fixture providing an instance
+            of the ClassificationSchema.
 
     Returns:
         None
     """
     response = create_predictions_response(
-        predictions_df, schema_provider, request_id, "prediction"
+        predictions_df, schema_provider, request_id
     )
 
     # Check that the output is a dictionary
@@ -76,6 +76,7 @@ def test_create_predictions_response(predictions_df, schema_provider, request_id
         "message",
         "timestamp",
         "requestId",
+        "targetClasses",
         "targetDescription",
         "predictions",
     }
@@ -88,6 +89,6 @@ def test_create_predictions_response(predictions_df, schema_provider, request_id
     assert isinstance(response["predictions"], list)
 
     # Check that each prediction has the correct keys
-    prediction_keys = {"sampleId", "prediction"}
+    prediction_keys = {"sampleId", "predictedProbabilities", "predictedClass"}
     for prediction in response["predictions"]:
         assert set(prediction.keys()) == prediction_keys

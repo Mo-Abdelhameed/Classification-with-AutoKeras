@@ -33,7 +33,7 @@ def test_valid_target():
     valid_target = {
         "name": "target",
         "description": "target description",
-        "example": 123,
+        "classes": ["A", "B", "C"]
     }
     target_obj = Target(**valid_target)
     assert target_obj.dict() == valid_target

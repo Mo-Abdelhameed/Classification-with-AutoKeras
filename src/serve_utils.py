@@ -5,7 +5,7 @@ import uuid
 from typing import Any, Dict, Tuple
 
 import pandas as pd
-
+import numpy as np
 from config import paths
 from data_models.data_validator import validate_data
 from logger import get_logger, log_error
@@ -101,7 +101,13 @@ async def transform_req_data_and_make_predictions(
         model_resources.predictor_model,
         data,
     )
-    predictions_df = pd.DataFrame(predictions_arr, columns=model_resources.data_schema.target_classes)
+    if model_resources.data_schema.model_category == 'multiclass_classification':
+        predictions_df = pd.DataFrame(predictions_arr, columns=model_resources.data_schema.target_classes)
+    elif model_resources.data_schema.model_category == 'binary_classification':
+        predictions_df = pd.DataFrame(
+            np.hstack((1-predictions_arr, predictions_arr)),
+            columns=model_resources.data_schema.target_classes
+        )
     predictions_df[model_resources.data_schema.id] = ids
 
     logger.info("Converting predictions dataframe into response dictionary...")
