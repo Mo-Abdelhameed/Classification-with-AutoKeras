@@ -94,15 +94,6 @@ class Classifier:
             overwrite=True,
             seed=self.model_config["seed_value"]
         )
-        # else:
-        #     self.predictor = ak.StructuredDataClassifier(
-        #         column_names=list(self.x.columns),
-        #         num_classes=len(self.schema.target_classes),
-        #         max_trials=self.model_config["max_trials"],
-        #         directory=predictor_dir_path,
-        #         overwrite=True,
-        #         seed=self.model_config["seed_value"]
-        #     )
 
     def __str__(self):
         return f"Model name: {self.model_name}"
