@@ -47,7 +47,7 @@ def run_training(
 
         x_train = run_pipeline(x_train, data_schema, training=True)
         x_train[data_schema.target] = encode_target(target, data_schema)
-        classifier = Classifier(x_train, data_schema, predictor_dir_path=predictor_dir_path)
+        classifier = Classifier(x_train, data_schema)
         classifier.train()
         if not os.path.exists(predictor_dir_path):
             os.makedirs(predictor_dir_path)
