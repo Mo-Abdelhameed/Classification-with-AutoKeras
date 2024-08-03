@@ -5,7 +5,7 @@ from logger import get_logger
 from Classifier import Classifier, predict_with_model
 from preprocessing.pipeline import run_pipeline
 from schema.data_schema import load_saved_schema
-from utils import read_csv_in_directory, save_dataframe_as_csv
+from utils import read_csv_in_directory, save_dataframe_as_csv, ResourceTracker
 
 logger = get_logger(task_name="predict")
 
@@ -26,15 +26,16 @@ def run_batch_predictions(
     adds ids into the predictions dataframe,
     and saves the predictions as a CSV file.
     """
-    x_test = read_csv_in_directory(test_dir)
-    data_schema = load_saved_schema(saved_schema_dir)
-    ids = x_test[data_schema.id]
-    x_test.drop(columns=data_schema.id, inplace=True)
-    x_test = run_pipeline(x_test, data_schema, training=False)
-    model = Classifier.load(predictor_dir)
+    with ResourceTracker(logger, monitoring_interval=0.1):
+        x_test = read_csv_in_directory(test_dir)
+        data_schema = load_saved_schema(saved_schema_dir)
+        ids = x_test[data_schema.id]
+        x_test.drop(columns=data_schema.id, inplace=True)
+        x_test = run_pipeline(x_test, data_schema, training=False)
+        model = Classifier.load(predictor_dir)
 
-    logger.info("Making predictions...")
-    predictions_arr = predict_with_model(model, x_test)
+        logger.info("Making predictions...")
+        predictions_arr = predict_with_model(model, x_test)
 
     if data_schema.model_category == 'multiclass_classification':
         predictions_df = pd.DataFrame(predictions_arr, columns=data_schema.target_classes)
